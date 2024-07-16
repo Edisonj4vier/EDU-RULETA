@@ -1,4 +1,5 @@
-Nelson Molina
-Edison Rochina
-Alexander Quinonez
-Erika Suntaxi
+Nombre de integrantes
+-Nelson Molina
+-Edison Rochina
+-Alexander Quinonez
+-Erika Suntaxi
