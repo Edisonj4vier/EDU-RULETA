@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'viewStudent/main.dart';
+import 'viewTeacher/main.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
   final _formKey = GlobalKey<FormState>();
   String _nombre = '';
   String _apellido = '';
-  DateTime? _fechaNacimiento; // Cambio a DateTime?
+  DateTime? _fechaNacimiento;
   String _tipoUsuario = 'Ninguno';
   String _descripcion = '';
 
@@ -95,12 +97,20 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    // Aquí puedes procesar los datos guardados
-                    print('Nombre: $_nombre');
-                    print('Apellido: $_apellido');
-                    print('Fecha de Nacimiento: $_fechaNacimiento');
-                    print('Tipo de Usuario: $_tipoUsuario');
-                    print('Descripción: $_descripcion');
+                    // Navegar a la pantalla correcta según el tipo de usuario
+                    if (_tipoUsuario == 'Estudiante') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => StudentMainScreen()),
+                      );
+                    } else if (_tipoUsuario == 'Profesor') {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TeacherMainScreen()),
+                      );
+                    }
                   }
                 },
                 child: Text('Registrarse'),
