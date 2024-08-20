@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Edu-Ruleta',
               style: TextStyle(
                 fontFamily: 'Serif',
@@ -37,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20), // Espacio entre el título y el botón
+            const SizedBox(height: 20), // Espacio entre el título y el botón
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -45,11 +47,11 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => RegisterUserScreen()),
                 );
               },
-              child: Text('Jugar'),
+              child: const Text('Jugar'),
             ),
-            SizedBox(height: 50), // Espacio para empujar el eslogan hacia abajo
-            Padding(
-              padding: const EdgeInsets.all(16.0),
+            const SizedBox(height: 50), // Espacio para empujar el eslogan hacia abajo
+            const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Nunca fue tan fácil aprender',
                 style: TextStyle(
