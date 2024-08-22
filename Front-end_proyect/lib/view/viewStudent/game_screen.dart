@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:url_launcher/url_launcher.dart'; // Importa el paquete url_launcher
 import 'dart:async';
 import 'questions.dart';
 
@@ -18,7 +19,7 @@ class _GameScreenState extends State<GameScreen> {
     'Geografía',
     'Arte'
   ];
-  int selectedIndex = 0;
+  int selectedIndex = -1; // Inicializa el índice seleccionado en -1
 
   @override
   void dispose() {
@@ -28,7 +29,7 @@ class _GameScreenState extends State<GameScreen> {
 
   void _spinWheel() {
     setState(() {
-      selectedIndex = Fortune.randomInt(0, items.length);
+      selectedIndex = Fortune.randomInt(0, items.length); // Gira la ruleta
       selected.add(selectedIndex);
     });
   }
@@ -48,14 +49,26 @@ class _GameScreenState extends State<GameScreen> {
                 for (var item in items) FortuneItem(child: Text(item)),
               ],
               onAnimationEnd: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => QuestionPage(
-                      question: getRandomQuestionByCategory(items[selectedIndex]),
+                if (selectedIndex != -1) {
+                  // Asegúrate de que la ruleta ha girado
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => QuestionPage(
+                        question:
+                            getRandomQuestionByCategory(items[selectedIndex]),
+                        onReturnToWheel: () {
+                          // Retorna a la pantalla de la ruleta
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GameScreen()),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
           ),
@@ -74,8 +87,20 @@ class _GameScreenState extends State<GameScreen> {
 
 class QuestionPage extends StatelessWidget {
   final Question question;
+  final VoidCallback onReturnToWheel;
 
-  QuestionPage({required this.question});
+  QuestionPage({required this.question, required this.onReturnToWheel});
+
+  // Función para abrir un enlace en el navegador
+  void _launchURL() async {
+    const url =
+        'https://www.youtube.com/watch?v=0d5VWxcSUIk'; // Enlace de ejemplo
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,16 +127,40 @@ class QuestionPage extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
+                        bool isCorrect =
+                            entry.key == question.correctAnswerIndex;
                         return AlertDialog(
-                          title: Text(entry.key == question.correctAnswerIndex ? '¡Correcto!' : 'Incorrecto'),
-                          content: Text(entry.key == question.correctAnswerIndex
-                              ? 'Has acertado la pregunta.'
-                              : 'La respuesta correcta era: ${question.options[question.correctAnswerIndex]}'),
+                          title: Text(isCorrect ? '¡Correcto!' : 'Incorrecto'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(isCorrect
+                                  ? '¡Muy bien! Sigue estudiando y serás el mejor.'
+                                  : '¡Oooo nooo! La respuesta ha sido equivocada, pero no te preocupes, la próxima vez lo lograremos.'),
+                              if (!isCorrect)
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: GestureDetector(
+                                    onTap:
+                                        _launchURL, // Abre el enlace al hacer clic
+                                    child: Text(
+                                      'Revisar el contenido',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
                           actions: [
                             TextButton(
                               child: Text('Volver a la ruleta'),
                               onPressed: () {
-                                Navigator.of(context).popUntil((route) => route.isFirst);
+                                Navigator.of(context)
+                                    .pop(); // Cierra el diálogo
+                                onReturnToWheel(); // Vuelve a la ruleta
                               },
                             ),
                           ],

@@ -7,6 +7,7 @@ class MisCursosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Eliminar la flecha de "Atrás"
         title: const Text('Mis Cursos'),
       ),
       body: Padding(
@@ -203,6 +204,8 @@ class _FormularioPreguntasPageState extends State<FormularioPreguntasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading:
+            false, // También aquí si deseas eliminar la flecha en esta pantalla
         title: const Text('Agregar Preguntas'),
       ),
       body: ListView.builder(

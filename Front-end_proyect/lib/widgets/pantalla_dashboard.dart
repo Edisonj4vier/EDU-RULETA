@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
-import '../view/viewTeacher/mis_cursos.dart'; // Asegúrate de importar la pantalla MisCursosPage
+import '../view/viewStudent/cursos_estudiantes.dart'; // Importa el archivo para estudiantes
+import '../view/viewTeacher/mis_cursos.dart'; // Importa el archivo para profesores
 
-class PantallaDashboard extends StatelessWidget {
+class PantallaDashboard extends StatefulWidget {
   final String rol;
 
   const PantallaDashboard({super.key, required this.rol});
 
   @override
+  _PantallaDashboardState createState() => _PantallaDashboardState();
+}
+
+class _PantallaDashboardState extends State<PantallaDashboard> {
+  String currentView = 'home'; // Para manejar qué contenido mostrar
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dashboard - $rol'),
+        title: Text('Dashboard - ${widget.rol}'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -18,9 +26,7 @@ class PantallaDashboard extends StatelessWidget {
           children: _buildMenuItems(context),
         ),
       ),
-      body: Center(
-        child: Text('Bienvenido al Dashboard del $rol'),
-      ),
+      body: _buildBody(), // Este método construirá el contenido dinámico
     );
   }
 
@@ -39,30 +45,78 @@ class PantallaDashboard extends StatelessWidget {
         leading: const Icon(Icons.person),
         title: const Text('Mi perfil'),
         onTap: () {
-          // Lógica para navegar a la pantalla de perfil
+          setState(() {
+            currentView = 'home';
+          });
+          Navigator.pop(context);
         },
       ),
-      if (rol == 'Profesor') ...[
+      if (widget.rol == 'Estudiante') ...[
+        ListTile(
+          leading: const Icon(Icons.question_answer),
+          title: const Text('Mis ruletas'),
+          onTap: () {
+            setState(() {
+              currentView =
+                  'mis_ruletas'; // Cambia el contenido a "Mis ruletas"
+            });
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.grade),
+          title: const Text('Mis notas'),
+          onTap: () {
+            setState(() {
+              currentView = 'mis_notas';
+            });
+            Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.book),
+          title: const Text('Material de apoyo'),
+          onTap: () {
+            setState(() {
+              currentView = 'material_apoyo';
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ] else if (widget.rol == 'Profesor') ...[
         ListTile(
           leading: const Icon(Icons.book),
           title: const Text('Mis cursos'),
           onTap: () {
-            // Navegar a la pantalla de Mis Cursos
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const MisCursosPage()),
-            );
+            setState(() {
+              currentView = 'mis_cursos';
+            });
+            Navigator.pop(context);
           },
         ),
         ListTile(
           leading: const Icon(Icons.group),
           title: const Text('Mis estudiantes'),
           onTap: () {
-            // Lógica para navegar a la pantalla de estudiantes
+            setState(() {
+              currentView = 'mis_estudiantes';
+            });
+            Navigator.pop(context);
+          },
+        ),
+      ] else if (widget.rol == 'Invitado') ...[
+        ListTile(
+          leading: const Icon(Icons.info),
+          title: const Text('Información del sistema'),
+          onTap: () {
+            setState(() {
+              currentView = 'info_sistema';
+            });
+            Navigator.pop(context);
           },
         ),
       ],
-      // Otras opciones para los diferentes roles...
+      const Divider(),
       ListTile(
         leading: const Icon(Icons.exit_to_app, color: Colors.red),
         title: const Text('Salir', style: TextStyle(color: Colors.red)),
@@ -75,5 +129,19 @@ class PantallaDashboard extends StatelessWidget {
     ];
 
     return menuItems;
+  }
+
+  Widget _buildBody() {
+    if (currentView == 'mis_ruletas') {
+      return const CursosEstudiantes(); // Mostrar la pantalla para estudiantes
+    } else if (currentView == 'mis_cursos') {
+      return const MisCursosPage(); // Mostrar la pantalla para profesores
+    }
+    // Agrega más pantallas aquí según currentView
+
+    // Pantalla principal por defecto
+    return Center(
+      child: Text('Bienvenido al Dashboard del ${widget.rol}'),
+    );
   }
 }

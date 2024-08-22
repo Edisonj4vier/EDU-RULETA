@@ -48,7 +48,12 @@ List<Question> questions = [
   Question(
     category: 'Arte',
     questionText: '¿Quién pintó "La Mona Lisa"?',
-    options: ['Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Miguel Ángel'],
+    options: [
+      'Vincent van Gogh',
+      'Pablo Picasso',
+      'Leonardo da Vinci',
+      'Miguel Ángel'
+    ],
     correctAnswerIndex: 2,
   ),
   // Añade más preguntas aquí...
@@ -60,7 +65,8 @@ Question getRandomQuestion() {
 }
 
 Question getRandomQuestionByCategory(String category) {
-  final categoryQuestions = questions.where((q) => q.category == category).toList();
+  final categoryQuestions =
+      questions.where((q) => q.category == category).toList();
   if (categoryQuestions.isEmpty) {
     // Si no hay preguntas en la categoría, devuelve una pregunta aleatoria
     return getRandomQuestion();
