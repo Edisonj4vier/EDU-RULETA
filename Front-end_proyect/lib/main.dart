@@ -1,67 +1,99 @@
 import 'package:flutter/material.dart';
-import 'view/register_user.dart';
+import 'pantallas/pantalla_registro.dart';
+import 'widgets/pantalla_dashboard.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Juego de Preguntas',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        useMaterial3: true,
       ),
-      debugShowCheckedModeBanner: false, // Añade esta línea
-      home: HomeScreen(),
+      home: const PaginaPrincipal(),
+      routes: {
+        '/registro': (context) => const PantallaRegistro(),
+      },
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class PaginaPrincipal extends StatelessWidget {
+  const PaginaPrincipal({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Edu-Ruleta',
-              style: TextStyle(
-                fontFamily: 'Serif',
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
+      body: Container(
+        decoration: const BoxDecoration(
+            // Si tienes una imagen de fondo, asegúrate de declararla en pubspec.yaml
+            // image: DecorationImage(
+            //   image: AssetImage('assets/background_image.png'),
+            //   fit: BoxFit.cover,
+            // ),
             ),
-            const SizedBox(height: 20), // Espacio entre el título y el botón
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterUserScreen()),
-                );
-              },
-              child: const Text('Jugar'),
-            ),
-            const SizedBox(height: 50), // Espacio para empujar el eslogan hacia abajo
-            const Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Nunca fue tan fácil aprender',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  fontSize: 16,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(
+                onPressed: () {
+                  // Navegar directamente al dashboard del Invitado
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          const PantallaDashboard(rol: 'Invitado'),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pink,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 ),
-                textAlign: TextAlign.center,
+                child: const Text(
+                  'Jugar',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Navegar a la pantalla de registro
+                  Navigator.pushNamed(context, '/registro');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
+                child: const Text(
+                  'Registrarse',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
