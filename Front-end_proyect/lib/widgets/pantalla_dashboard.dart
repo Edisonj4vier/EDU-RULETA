@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../view/viewStudent/cursos_estudiantes.dart'; // Importa el archivo para estudiantes
+import '../view/viewStudent/main.dart';
 import '../view/viewTeacher/mis_cursos.dart'; // Importa el archivo para profesores
 
 class PantallaDashboard extends StatefulWidget {
@@ -17,7 +18,9 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: (currentView == 'home' && widget.rol == 'Estudiante')
+          ? null // No mostrar AppBar cuando la vista es para estudiantes
+          : AppBar(
         title: Text('Dashboard - ${widget.rol}'),
       ),
       drawer: Drawer(
@@ -57,8 +60,7 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
           title: const Text('Mis ruletas'),
           onTap: () {
             setState(() {
-              currentView =
-                  'mis_ruletas'; // Cambia el contenido a "Mis ruletas"
+              currentView = 'mis_ruletas'; // Cambia el contenido a "Mis ruletas"
             });
             Navigator.pop(context);
           },
@@ -132,7 +134,10 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
   }
 
   Widget _buildBody() {
-    if (currentView == 'mis_ruletas') {
+    // Mostrar StudentMainScreen si el rol es 'Estudiante' y la vista es 'home'
+    if (widget.rol == 'Estudiante' && currentView == 'home') {
+      return const StudentMainScreen(); // Mostrar la pantalla específica para estudiantes
+    } else if (currentView == 'mis_ruletas') {
       return const CursosEstudiantes(); // Mostrar la pantalla para estudiantes
     } else if (currentView == 'mis_cursos') {
       return const MisCursosPage(); // Mostrar la pantalla para profesores
