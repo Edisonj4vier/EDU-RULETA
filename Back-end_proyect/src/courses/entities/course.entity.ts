@@ -4,9 +4,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from '../../auth/entities/auth.entity'; // Asegúrate de que la ruta sea correcta
-
+import { Topic } from 'src/topics/entities/topic.entity';
 @Entity('courses')
 export class Course {
   @PrimaryGeneratedColumn('uuid')
@@ -27,4 +28,7 @@ export class Course {
   @ManyToOne(() => User)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @OneToMany(() => Topic, (topic) => topic.course)
+  topics: Topic[];
 }
