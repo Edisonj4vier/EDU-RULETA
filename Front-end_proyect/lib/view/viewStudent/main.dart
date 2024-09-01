@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_drawer.dart';
-import '../viewStudent/game_screen.dart';
+import 'game_screen.dart';
 
 class StudentMainScreen extends StatelessWidget {
   const StudentMainScreen({Key? key}) : super(key: key);
