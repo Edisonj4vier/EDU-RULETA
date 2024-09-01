@@ -35,8 +35,11 @@ class PaginaPrincipal extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-            // Puedes agregar una imagen de fondo aquí si lo deseas
-            ),
+          image: DecorationImage(
+            image: AssetImage('assets/inicio.jpg'), // Ruta a tu imagen
+            fit: BoxFit.cover, // Asegura que la imagen cubra toda la pantalla
+          ),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
