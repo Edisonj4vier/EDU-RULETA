@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: backend-service
+    env: node
+    repo: https://github.com/aaquinonez01/EDU-RULETA
+    branch: main
+    buildCommand: cd Back-end_proyect && pnpm install && pnpm run build
+    startCommand: cd Back-end_proyect && pnpm run start:prod
+    rootDir: Back-end_proyect
+    envVars:
+      DATABASE_URL: <your_database_url>
+      JWT_SECRET: <your_jwt_secret>
