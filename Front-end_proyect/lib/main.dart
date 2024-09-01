@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'pantallas/pantalla_registro.dart';
 import 'widgets/pantalla_dashboard.dart';
+import 'pantallas/pantalla_login.dart'; // Asegúrate de crear este archivo
 
 void main() {
   runApp(const MyApp());
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       home: const PaginaPrincipal(),
       routes: {
         '/registro': (context) => const PantallaRegistro(),
+        '/login': (context) => const PantallaLogin(), // Añade esta ruta
       },
     );
   }
@@ -33,11 +35,7 @@ class PaginaPrincipal extends StatelessWidget {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-            // Si tienes una imagen de fondo, asegúrate de declararla en pubspec.yaml
-            // image: DecorationImage(
-            //   image: AssetImage('assets/background_image.png'),
-            //   fit: BoxFit.cover,
-            // ),
+            // Puedes agregar una imagen de fondo aquí si lo deseas
             ),
         child: Center(
           child: Column(
@@ -45,7 +43,6 @@ class PaginaPrincipal extends StatelessWidget {
             children: <Widget>[
               ElevatedButton(
                 onPressed: () {
-                  // Navegar directamente al dashboard del Invitado
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -73,7 +70,28 @@ class PaginaPrincipal extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Navegar a la pantalla de registro
+                  Navigator.pushNamed(
+                      context, '/login'); // Navega a la página de login
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, // Cambiado a verde
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
+                child: const Text(
+                  'Login', // Cambiado el texto a 'Login'
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
                   Navigator.pushNamed(context, '/registro');
                 },
                 style: ElevatedButton.styleFrom(
