@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { SubjectModule } from './subject/subject.module';
-import { TopicModule } from './topic/topic.module';
+import { CoursesModule } from './courses/courses.module';
+import { CommonModule } from './common/common.module';
+import { TopicsModule } from './topics/topics.module';
 
 @Module({
   imports: [
@@ -20,8 +21,9 @@ import { TopicModule } from './topic/topic.module';
       synchronize: true,
     }),
     AuthModule,
-    SubjectModule,
-    TopicModule,
+    CoursesModule,
+    CommonModule,
+    TopicsModule,
   ],
 })
 export class AppModule {}
