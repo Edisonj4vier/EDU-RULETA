@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { CoursesModule } from './courses/courses.module';
 import { CommonModule } from './common/common.module';
 import { TopicsModule } from './topics/topics.module';
+import { QuestionsModule } from './questions/questions.module';
 
 @Module({
   imports: [
@@ -19,12 +20,12 @@ import { TopicsModule } from './topics/topics.module';
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
-      ssl: { rejectUnauthorized: false },
     }),
     AuthModule,
     CoursesModule,
     CommonModule,
     TopicsModule,
+    QuestionsModule,
   ],
 })
 export class AppModule {}

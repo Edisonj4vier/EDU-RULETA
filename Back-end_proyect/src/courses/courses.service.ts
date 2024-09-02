@@ -1,4 +1,10 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,27 +18,25 @@ export class CoursesService {
   constructor(
     @InjectRepository(Course)
     private readonly productRepository: Repository<Course>,
-
-    private readonly dataSource: DataSource,
   ) {}
-  create(createCourseDto: CreateCourseDto) {
+  async create(createCourseDto: CreateCourseDto) {
     const course = this.productRepository.create(createCourseDto);
-    return this.productRepository.save(course);
+    return await this.productRepository.save(course);
   }
 
-  findAll(paginationDTO: PaginationDto) {
+  async findAll(paginationDTO: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDTO;
 
-    return this.productRepository.find({
+    return await this.productRepository.find({
       take: limit,
       skip: limit * offset,
     });
   }
 
-  findAllByUser(userId: string, paginationDTO: PaginationDto) {
+  async findAllByUser(userId: string, paginationDTO: PaginationDto) {
     const { limit = 5, offset = 0 } = paginationDTO;
 
-    return this.productRepository.find({
+    return await this.productRepository.find({
       take: limit,
       skip: limit * offset,
       where: {
@@ -41,7 +45,7 @@ export class CoursesService {
     });
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     const course = this.productRepository.find({
       where: { id: id },
       relations: ['user'],
@@ -52,11 +56,26 @@ export class CoursesService {
     return course;
   }
 
-  update(id: string, updateCourseDto: UpdateCourseDto) {
-    const course = this.productRepository.update(id, updateCourseDto);
+  async update(id: string, updateCourseDto: UpdateCourseDto) {
+    const course = await this.productRepository.update(id, updateCourseDto);
+    if (!course) {
+      throw new NotFoundException('Course not found');
+    }
+    return course;
   }
 
-  remove(id: string) {
-    return this.productRepository.delete(id);
+  async remove(id: string) {
+    return await this.productRepository.delete(id);
+  }
+
+  private handleDBExceptions(error: any) {
+    if (error.code === '23505') {
+      throw new BadRequestException(error.detail);
+    }
+
+    this.logger.error(error.message);
+    throw new InternalServerErrorException(
+      'Unexpected error. check server logs',
+    );
   }
 }

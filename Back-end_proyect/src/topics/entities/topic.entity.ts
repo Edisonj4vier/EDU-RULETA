@@ -1,10 +1,12 @@
 import { Course } from 'src/courses/entities/course.entity';
+import { Question } from 'src/questions/entities/question.entity';
 import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('topics')
@@ -24,10 +26,10 @@ export class Topic {
   @Column('text', { nullable: true })
   url_imagen: string;
 
-  @Column('bigint')
-  course_id: number;
-
-  @ManyToOne(() => Course, (course) => course.topics)
+  @ManyToOne(() => Course, (course) => course.topics, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'course_id' })
   course: Course;
+
+  @OneToMany(() => Question, (question) => question.topic)
+  questions: Question[];
 }

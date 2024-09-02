@@ -22,10 +22,10 @@ export class Course {
   @Column('text', { unique: true })
   codigo_acceso: string;
 
-  @Column('bigint')
-  profesor_id: number;
+  @Column('int', { default: 30 })
+  temporizador: number;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, (user) => user.courses, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

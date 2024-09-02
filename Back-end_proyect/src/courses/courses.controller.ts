@@ -28,15 +28,12 @@ export class CoursesController {
   }
 
   @Get()
-  @Auth()
   findAll(@Query() paginationDTO: PaginationDto) {
     return this.coursesService.findAll(paginationDTO);
   }
   // Obtener todos los cursos de un usuario
   @Get('user/:userId')
-  @Auth()
   findAllByUser(
-    @GetUser() user: User,
     @Param('userId') userId: string,
     @Query() paginationDTO: PaginationDto,
   ) {
@@ -44,7 +41,6 @@ export class CoursesController {
   }
 
   @Get(':id')
-  @Auth()
   findOne(@Param('id') id: string) {
     return this.coursesService.findOne(id);
   }

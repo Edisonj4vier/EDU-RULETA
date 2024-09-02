@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { CreateTopicDto } from './dto/create-topic.dto';
 import { UpdateTopicDto } from './dto/update-topic.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('topics')
 export class TopicsController {
@@ -20,22 +22,22 @@ export class TopicsController {
     return this.topicsService.create(createTopicDto);
   }
   @Get()
-  findAll() {
-    return this.topicsService.findAll();
+  findAll(@Query() paginationDTO: PaginationDto) {
+    return this.topicsService.findAll(paginationDTO);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.topicsService.findOne(+id);
+    return this.topicsService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTopicDto: UpdateTopicDto) {
-    return this.topicsService.update(+id, updateTopicDto);
+    return this.topicsService.update(id, updateTopicDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.topicsService.remove(+id);
+    return this.topicsService.remove(id);
   }
 }
