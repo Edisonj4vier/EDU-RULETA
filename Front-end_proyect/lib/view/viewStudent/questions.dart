@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 
+// Definición de la clase Question
 class Question {
   final String category;
   final String questionText;
@@ -14,6 +17,7 @@ class Question {
   });
 }
 
+// Lista de preguntas
 List<Question> questions = [
   Question(
     category: 'Matemáticas',
@@ -48,29 +52,23 @@ List<Question> questions = [
   Question(
     category: 'Arte',
     questionText: '¿Quién pintó "La Mona Lisa"?',
-    options: [
-      'Vincent van Gogh',
-      'Pablo Picasso',
-      'Leonardo da Vinci',
-      'Miguel Ángel'
-    ],
+    options: ['Vincent van Gogh', 'Pablo Picasso', 'Leonardo da Vinci', 'Miguel Ángel'],
     correctAnswerIndex: 2,
   ),
-  // Añade más preguntas aquí...
 ];
 
+// Funciones para obtener preguntas
 Question getRandomQuestion() {
   final random = Random();
   return questions[random.nextInt(questions.length)];
 }
 
 Question getRandomQuestionByCategory(String category) {
-  final categoryQuestions =
-      questions.where((q) => q.category == category).toList();
+  final categoryQuestions = questions.where((q) => q.category == category).toList();
   if (categoryQuestions.isEmpty) {
-    // Si no hay preguntas en la categoría, devuelve una pregunta aleatoria
     return getRandomQuestion();
   }
   final random = Random();
   return categoryQuestions[random.nextInt(categoryQuestions.length)];
 }
+

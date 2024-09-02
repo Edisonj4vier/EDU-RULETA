@@ -14,6 +14,8 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
   bool _terminosAceptados = false;
   bool _mostrarMensajeErrorCampos = false;
   bool _mostrarMensajeErrorTerminos = false;
+  String? _password;
+  String? _confirmPassword;
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +57,33 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                   return null;
                 },
               ),
+              const SizedBox(height: 20),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Apodo'),
+                decoration: const InputDecoration(labelText: 'Contraseña'),
+                obscureText: true,
+                onChanged: (value) {
+                  _password = value;
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese su apodo';
+                    return 'Por favor ingrese su contraseña';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                decoration:
+                    const InputDecoration(labelText: 'Verificar Contraseña'),
+                obscureText: true,
+                onChanged: (value) {
+                  _confirmPassword = value;
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor verifique su contraseña';
+                  }
+                  if (value != _password) {
+                    return 'Las contraseñas no coinciden';
                   }
                   return null;
                 },
