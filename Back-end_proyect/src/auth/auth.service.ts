@@ -26,7 +26,7 @@ export class AuthService {
   async create(createUserDto: CreateUserDto) {
     try {
       const { password, ...userData } = createUserDto;
-
+      if (!userData.roles) userData.roles = ['student'];
       const user = this.userRepository.create({
         ...userData,
         password: bcrypt.hashSync(password, 10),
