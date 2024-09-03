@@ -12,7 +12,14 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   StreamController<int> selected = StreamController<int>();
-  List<String> items = ['Matemáticas', 'Historia', 'Ciencias', 'Lenguaje', 'Geografía', 'Arte'];
+  List<String> items = [
+    'Matemáticas',
+    'Historia',
+    'Ciencias',
+    'Lenguaje',
+    'Geografía',
+    'Arte'
+  ];
   int selectedIndex = -1;
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -22,10 +29,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.elasticOut);
-    _decorController = AnimationController(duration: const Duration(seconds: 10), vsync: this)..repeat();
-    _decorAnimation = CurvedAnimation(parent: _decorController, curve: Curves.linear);
+    _decorController =
+        AnimationController(duration: const Duration(seconds: 10), vsync: this)
+          ..repeat();
+    _decorAnimation =
+        CurvedAnimation(parent: _decorController, curve: Curves.linear);
   }
 
   @override
@@ -48,7 +59,8 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edu-Ruleta Mágica', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text('Edu-Ruleta Mágica',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.purple,
       ),
       body: Container(
@@ -86,10 +98,15 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                             FortuneItem(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(item, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                                child: Text(item,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
                               ),
                               style: FortuneItemStyle(
-                                color: Colors.primaries[items.indexOf(item) % Colors.primaries.length],
+                                color: Colors.primaries[items.indexOf(item) %
+                                    Colors.primaries.length],
                                 borderWidth: 3,
                                 borderColor: Colors.white,
                               ),
@@ -101,11 +118,13 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => QuestionPage(
-                                  question: getRandomQuestionByCategory(items[selectedIndex]),
+                                  question: getRandomQuestionByCategory(
+                                      items[selectedIndex]),
                                   onReturnToWheel: () {
                                     Navigator.pushReplacement(
                                       context,
-                                      MaterialPageRoute(builder: (context) => GameScreen()),
+                                      MaterialPageRoute(
+                                          builder: (context) => GameScreen()),
                                     );
                                   },
                                 ),
@@ -120,11 +139,14 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: ElevatedButton(
-                    child: Text('¡Girar la Ruleta Mágica!', style: TextStyle(fontSize: 20)),
+                    child: Text('¡Girar la Ruleta Mágica!',
+                        style: TextStyle(fontSize: 20)),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.amber,
-                      onPrimary: Colors.purple[900],
-                      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      backgroundColor: Colors.amber, // Reemplaza `primary`
+                      foregroundColor:
+                          Colors.purple[900], // Reemplaza `onPrimary`
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
@@ -143,7 +165,13 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
   Widget _buildFloatingObject(int index) {
     final random = Random(index);
     final size = random.nextInt(30) + 20.0;
-    final icons = [Icons.book, Icons.create, Icons.school, Icons.lightbulb, Icons.psychology];
+    final icons = [
+      Icons.book,
+      Icons.create,
+      Icons.school,
+      Icons.lightbulb,
+      Icons.psychology
+    ];
     final icon = icons[random.nextInt(icons.length)];
 
     return AnimatedBuilder(
@@ -151,8 +179,11 @@ class _GameScreenState extends State<GameScreen> with TickerProviderStateMixin {
       builder: (context, child) {
         return Positioned(
           left: random.nextDouble() * MediaQuery.of(context).size.width,
-          top: (random.nextDouble() * MediaQuery.of(context).size.height - size) *
-              (1 + sin((_decorAnimation.value + random.nextDouble()) * 2 * pi)) / 2,
+          top: (random.nextDouble() * MediaQuery.of(context).size.height -
+                  size) *
+              (1 +
+                  sin((_decorAnimation.value + random.nextDouble()) * 2 * pi)) /
+              2,
           child: Opacity(
             opacity: 0.7,
             child: Icon(icon, size: size, color: Colors.white),
@@ -187,7 +218,8 @@ class _QuestionPageState extends State<QuestionPage> {
         ),
         title: Text(
           widget.question.category,
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
         ),
         backgroundColor: _getCategoryColor(widget.question.category),
         elevation: 0,
@@ -208,13 +240,17 @@ class _QuestionPageState extends State<QuestionPage> {
               children: [
                 Card(
                   elevation: 5,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15)),
                   color: Colors.white,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       widget.question.questionText,
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black87),
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -229,8 +265,9 @@ class _QuestionPageState extends State<QuestionPage> {
                         style: TextStyle(fontSize: 18, color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
-                        primary: _getOptionColor(entry.key),
-                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                        backgroundColor: _getOptionColor(entry.key),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -270,7 +307,9 @@ class _QuestionPageState extends State<QuestionPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(
-                isCorrect ? Icons.celebration : Icons.sentiment_very_dissatisfied,
+                isCorrect
+                    ? Icons.celebration
+                    : Icons.sentiment_very_dissatisfied,
                 size: 80,
                 color: isCorrect ? Colors.yellow : Colors.blue,
               ),
@@ -293,7 +332,8 @@ class _QuestionPageState extends State<QuestionPage> {
               },
             ),
           ],
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           backgroundColor: Colors.white,
         );
       },
@@ -306,7 +346,7 @@ class _QuestionPageState extends State<QuestionPage> {
         return Colors.blue[400]!;
       case 'Historia':
         return Colors.orange[400]!;
-      case 'Ciencias Naturales':
+      case 'Ciencias':
         return Colors.green[400]!;
       case 'Lenguaje':
         return Colors.purple[400]!;

@@ -32,7 +32,7 @@ class _CursosEstudiantesState extends State<CursosEstudiantes> {
                   children: [
                     Text(
                       'Agregar Nuevo Curso',
-                      style: Theme.of(context).textTheme.headline6,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 16),
                     TextField(
@@ -61,7 +61,7 @@ class _CursosEstudiantesState extends State<CursosEstudiantes> {
                       icon: const Icon(Icons.add),
                       label: const Text('Agregar Curso'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
+                        backgroundColor: Colors.green,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -76,40 +76,41 @@ class _CursosEstudiantesState extends State<CursosEstudiantes> {
             Expanded(
               child: cursos.isEmpty
                   ? Center(
-                child: Text(
-                  'No tienes cursos agregados aún',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              )
-                  : ListView.builder(
-                itemCount: cursos.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    elevation: 2,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blue[700],
-                        child: Text(
-                          cursos[index]['nombre']![0],
-                          style: const TextStyle(color: Colors.white),
-                        ),
+                      child: Text(
+                        'No tienes cursos agregados aún',
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      title: Text(cursos[index]['nombre']!),
-                      subtitle: Text('Código: ${cursos[index]['codigo']}'),
-                      trailing: const Icon(Icons.arrow_forward_ios),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => GameScreen(),
+                    )
+                  : ListView.builder(
+                      itemCount: cursos.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 2,
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.blue[700],
+                              child: Text(
+                                cursos[index]['nombre']![0],
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            title: Text(cursos[index]['nombre']!),
+                            subtitle:
+                                Text('Código: ${cursos[index]['codigo']}'),
+                            trailing: const Icon(Icons.arrow_forward_ios),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GameScreen(),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),

@@ -31,10 +31,10 @@ class StudentMainScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Text(
                   '¡Bienvenido, Estudiante!',
-                  style: Theme.of(context).textTheme.headline4?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
@@ -56,7 +56,8 @@ class StudentMainScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green,
+                    backgroundColor: Colors
+                        .green, // Cambiado de 'primary' a 'backgroundColor'
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -64,9 +65,9 @@ class StudentMainScreen extends StatelessWidget {
                   ),
                   child: Text(
                     'Jugar Edu-Ruleta',
-                    style: Theme.of(context).textTheme.headline6?.copyWith(
-                      color: Colors.white,
-                    ),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.white,
+                        ),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -83,7 +84,8 @@ class StudentMainScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildInfoCard(BuildContext context, String title, String value, IconData icon, Color color) {
+  Widget _buildInfoCard(BuildContext context, String title, String value,
+      IconData icon, Color color) {
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -96,8 +98,12 @@ class StudentMainScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title, style: Theme.of(context).textTheme.subtitle1),
-                Text(value, style: Theme.of(context).textTheme.headline5?.copyWith(fontWeight: FontWeight.bold)),
+                Text(title, style: Theme.of(context).textTheme.bodySmall),
+                Text(value,
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold)),
               ],
             ),
           ],

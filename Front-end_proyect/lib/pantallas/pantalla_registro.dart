@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../widgets/pantalla_dashboard.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class PantallaRegistro extends StatefulWidget {
   const PantallaRegistro({super.key});
@@ -10,20 +11,60 @@ class PantallaRegistro extends StatefulWidget {
 
 class _PantallaRegistroState extends State<PantallaRegistro> {
   final _formKey = GlobalKey<FormState>();
-  String? _rolSeleccionado = 'Invitado'; // Valor por defecto
   bool _terminosAceptados = false;
   bool _mostrarMensajeErrorCampos = false;
   bool _mostrarMensajeErrorTerminos = false;
   String? _password;
   String? _confirmPassword;
+  String? _nombre;
+  String? _apellido;
+  String? _email;
+
+  Future<void> _registrarse() async {
+    final url = Uri.parse('https://edu-ruleta.onrender.com/api/auth/register');
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': _email!,
+        'password': _password!,
+        'fullName': '$_nombre $_apellido',
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuario ha sido registrado con éxito')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content:
+                Text('Error ${response.statusCode}: ${response.reasonPhrase}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Registro'),
+        backgroundColor: Colors.lightBlue[300], // Azul claro
       ),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.lightBlueAccent,
+              Colors.green,
+            ],
+          ),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -31,6 +72,9 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
             children: <Widget>[
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Nombre'),
+                onChanged: (value) {
+                  _nombre = value;
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese su nombre';
@@ -40,6 +84,9 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Apellido'),
+                onChanged: (value) {
+                  _apellido = value;
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese su apellido';
@@ -50,6 +97,9 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
+                onChanged: (value) {
+                  _email = value;
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese su email';
@@ -86,22 +136,6 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
                     return 'Las contraseñas no coinciden';
                   }
                   return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
-                value: _rolSeleccionado,
-                decoration: const InputDecoration(labelText: 'Rol'),
-                items: const [
-                  DropdownMenuItem(
-                      value: 'Estudiante', child: Text('Estudiante')),
-                  DropdownMenuItem(value: 'Profesor', child: Text('Profesor')),
-                  DropdownMenuItem(value: 'Invitado', child: Text('Invitado')),
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _rolSeleccionado = value;
-                  });
                 },
               ),
               const SizedBox(height: 20),
@@ -143,21 +177,13 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
 
                     if (!_mostrarMensajeErrorCampos &&
                         !_mostrarMensajeErrorTerminos) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Registro exitoso')),
-                      );
-
-                      // Navegar al dashboard correspondiente según el rol
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PantallaDashboard(rol: _rolSeleccionado!),
-                        ),
-                      );
+                      _registrarse();
                     }
                   });
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red[800], // Rojo oscuro
+                ),
                 child: const Text('Registrarse'),
               ),
             ],
