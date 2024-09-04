@@ -20,6 +20,9 @@ import { QuestionsModule } from './questions/questions.module';
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     }),
     AuthModule,
     CoursesModule,
