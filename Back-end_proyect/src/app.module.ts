@@ -6,6 +6,7 @@ import { CoursesModule } from './courses/courses.module';
 import { CommonModule } from './common/common.module';
 import { TopicsModule } from './topics/topics.module';
 import { QuestionsModule } from './questions/questions.module';
+import { StudentCourseModule } from './student_course/student_course.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { QuestionsModule } from './questions/questions.module';
     CommonModule,
     TopicsModule,
     QuestionsModule,
+    StudentCourseModule,
   ],
 })
 export class AppModule {}

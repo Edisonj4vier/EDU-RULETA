@@ -11,23 +11,27 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from './entities/course.entity';
 import { DataSource, Repository } from 'typeorm';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { User } from 'src/auth/entities/auth.entity';
 @Injectable()
 export class CoursesService {
   private readonly logger = new Logger('CoursesService');
 
   constructor(
     @InjectRepository(Course)
-    private readonly productRepository: Repository<Course>,
+    private readonly courseRepository: Repository<Course>,
   ) {}
-  async create(createCourseDto: CreateCourseDto) {
-    const course = this.productRepository.create(createCourseDto);
-    return await this.productRepository.save(course);
+  async create(createCourseDto: CreateCourseDto, user: User) {
+    const course = this.courseRepository.create({
+      ...createCourseDto,
+      user,
+    });
+    return await this.courseRepository.save(course);
   }
 
   async findAll(paginationDTO: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDTO;
 
-    return await this.productRepository.find({
+    return await this.courseRepository.find({
       take: limit,
       skip: limit * offset,
     });
@@ -36,7 +40,7 @@ export class CoursesService {
   async findAllByUser(userId: string, paginationDTO: PaginationDto) {
     const { limit = 5, offset = 0 } = paginationDTO;
 
-    return await this.productRepository.find({
+    return await this.courseRepository.find({
       take: limit,
       skip: limit * offset,
       where: {
@@ -46,9 +50,9 @@ export class CoursesService {
   }
 
   async findOne(id: string) {
-    const course = this.productRepository.find({
+    const course = this.courseRepository.find({
       where: { id: id },
-      relations: ['user'],
+      relations: ['user', 'topics'],
     });
     if (!course) {
       throw new NotFoundException('Course not found');
@@ -57,7 +61,7 @@ export class CoursesService {
   }
 
   async update(id: string, updateCourseDto: UpdateCourseDto) {
-    const course = await this.productRepository.update(id, updateCourseDto);
+    const course = await this.courseRepository.update(id, updateCourseDto);
     if (!course) {
       throw new NotFoundException('Course not found');
     }
@@ -65,7 +69,7 @@ export class CoursesService {
   }
 
   async remove(id: string) {
-    return await this.productRepository.delete(id);
+    return await this.courseRepository.delete(id);
   }
 
   private handleDBExceptions(error: any) {
