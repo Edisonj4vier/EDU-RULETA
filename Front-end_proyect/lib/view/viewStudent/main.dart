@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_drawer.dart';
 import 'game_screen.dart';
-import 'mis_notas.dart';
-import 'material_apoyo.dart';
+import 'mis_notas.dart'; // Importa la pantalla de notas
+import 'material_apoyo.dart'; // Importa la pantalla de material de apoyo
 
 class StudentMainScreen extends StatelessWidget {
   const StudentMainScreen({Key? key}) : super(key: key);

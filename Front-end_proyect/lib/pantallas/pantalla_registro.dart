@@ -27,22 +27,53 @@ class _PantallaRegistroState extends State<PantallaRegistro> {
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
-      body: jsonEncode(<String, String>{
+      body: jsonEncode(<String, dynamic>{
         'email': _email!,
         'password': _password!,
         'fullName': '$_nombre $_apellido',
+        'roles': ['student'], // Rol predeterminado como "student"
       }),
     );
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Usuario ha sido registrado con éxito')),
-      );
+    if (response.statusCode == 201) {
+      // Extraer el token de la respuesta si se ha registrado correctamente
+      final responseBody = jsonDecode(response.body);
+      final token = responseBody['token'];
+
+      // Si el token está presente, mostrar el mensaje de éxito
+      if (token != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: const [
+                Icon(Icons.check_circle, color: Colors.green),
+                SizedBox(width: 10),
+                Text('Usuario registrado con éxito'),
+              ],
+            ),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+
+        // Después de 3 segundos, redirigir al main
+        await Future.delayed(const Duration(seconds: 3));
+        Navigator.pushReplacementNamed(context, '/');
+      } else {
+        // Si no se obtiene el token, mostrar un mensaje de error
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content:
+                Text('Error: No se pudo obtener el token de autenticación'),
+          ),
+        );
+      }
     } else {
+      // Mostrar un mensaje si hay un error
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-            content:
-                Text('Error ${response.statusCode}: ${response.reasonPhrase}')),
+          content:
+              Text('Error ${response.statusCode}: ${response.reasonPhrase}'),
+        ),
       );
     }
   }
