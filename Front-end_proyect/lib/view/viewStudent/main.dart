@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_drawer.dart';
 import 'game_screen.dart';
+import 'mis_notas.dart';
+import 'material_apoyo.dart';
 
 class StudentMainScreen extends StatelessWidget {
   const StudentMainScreen({Key? key}) : super(key: key);
@@ -56,19 +58,13 @@ class StudentMainScreen extends StatelessWidget {
                 const SizedBox(height: 40),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors
-                        .green, // Cambiado de 'primary' a 'backgroundColor'
+                    backgroundColor: Colors.green,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: Text(
-                    'Jugar Edu-Ruleta',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                  ),
+                  child: const Text('Jugar Edu-Ruleta'),
                   onPressed: () {
                     Navigator.push(
                       context,
