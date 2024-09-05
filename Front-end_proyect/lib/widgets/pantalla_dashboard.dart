@@ -1,8 +1,8 @@
+import 'package:edu_ruleta/view/viewTeacher/main.dart'; // Importa la pantalla principal del profesor
 import 'package:flutter/material.dart';
 import '../view/viewStudent/cursos_estudiantes.dart';
 import '../view/viewStudent/main.dart';
-import '../view/viewTeacher/mis_cursos.dart';
-// Importa aquí las vistas necesarias para el rol de admin
+import '../view/viewTeacher/mis_cursos.dart'; // Importa la página de gestión de cursos del profesor
 
 class PantallaDashboard extends StatefulWidget {
   final String rol;
@@ -14,13 +14,13 @@ class PantallaDashboard extends StatefulWidget {
 }
 
 class _PantallaDashboardState extends State<PantallaDashboard> {
-  String currentView = 'home';
+  String currentView = 'home'; // Inicializamos la vista por defecto
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: (currentView == 'home' && widget.rol == 'student')
-          ? null
+      appBar: (currentView == 'home')
+          ? null // Elimina el AppBar si estás en la vista principal
           : AppBar(
               title: Text('Dashboard - ${_getRolName(widget.rol)}'),
             ),
@@ -30,7 +30,7 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
           children: _buildMenuItems(context),
         ),
       ),
-      body: _buildBody(),
+      body: _buildBody(), // Se muestra el contenido correspondiente
     );
   }
 
@@ -40,16 +40,14 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
         return 'Estudiante';
       case 'teacher':
         return 'Profesor';
-      case 'admin':
-        return 'Administrador';
       default:
-        return 'Invitado';
+        return 'Estudiante'; // Por defecto, estudiante
     }
   }
 
   List<Widget> _buildMenuItems(BuildContext context) {
     List<Widget> menuItems = [
-      DrawerHeader(
+      const DrawerHeader(
         decoration: BoxDecoration(
           color: Colors.blue,
         ),
@@ -59,46 +57,47 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
         ),
       ),
       ListTile(
-        leading: Icon(Icons.person),
-        title: Text('Mi perfil'),
+        leading: const Icon(Icons.person),
+        title: const Text('Mi perfil'),
         onTap: () {
           setState(() {
-            currentView = 'home';
+            currentView = 'home'; // Cambia a la vista de inicio
           });
           Navigator.pop(context);
         },
       ),
     ];
 
+    // Dependiendo del rol del usuario, agregamos elementos al menú
     switch (widget.rol) {
       case 'student':
         menuItems.addAll([
           ListTile(
-            leading: Icon(Icons.question_answer),
-            title: Text('Mis ruletas'),
+            leading: const Icon(Icons.question_answer),
+            title: const Text('Mis ruletas'),
             onTap: () {
               setState(() {
-                currentView = 'mis_ruletas';
+                currentView = 'mis_ruletas'; // Cambia a la vista de ruletas
               });
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.grade),
-            title: Text('Mis notas'),
+            leading: const Icon(Icons.grade),
+            title: const Text('Mis notas'),
             onTap: () {
               setState(() {
-                currentView = 'mis_notas';
+                currentView = 'mis_notas'; // Cambia a la vista de notas
               });
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.book),
-            title: Text('Material de apoyo'),
+            leading: const Icon(Icons.book),
+            title: const Text('Material de apoyo'),
             onTap: () {
               setState(() {
-                currentView = 'material_apoyo';
+                currentView = 'material_apoyo'; // Cambia a la vista de material
               });
               Navigator.pop(context);
             },
@@ -108,45 +107,22 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
       case 'teacher':
         menuItems.addAll([
           ListTile(
-            leading: Icon(Icons.book),
-            title: Text('Mis cursos'),
+            leading: const Icon(Icons.book),
+            title: const Text('Mis cursos'),
             onTap: () {
               setState(() {
-                currentView = 'mis_cursos';
+                currentView = 'mis_cursos'; // Cambia a la vista de cursos
               });
               Navigator.pop(context);
             },
           ),
           ListTile(
-            leading: Icon(Icons.group),
-            title: Text('Mis estudiantes'),
+            leading: const Icon(Icons.group),
+            title: const Text('Mis estudiantes'),
             onTap: () {
               setState(() {
-                currentView = 'mis_estudiantes';
-              });
-              Navigator.pop(context);
-            },
-          ),
-        ]);
-        break;
-      case 'admin':
-        menuItems.addAll([
-          ListTile(
-            leading: Icon(Icons.admin_panel_settings),
-            title: Text('Panel de administración'),
-            onTap: () {
-              setState(() {
-                currentView = 'admin_panel';
-              });
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.people),
-            title: Text('Gestión de usuarios'),
-            onTap: () {
-              setState(() {
-                currentView = 'user_management';
+                currentView =
+                    'mis_estudiantes'; // Cambia a la vista de estudiantes
               });
               Navigator.pop(context);
             },
@@ -156,10 +132,10 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
     }
 
     menuItems.addAll([
-      Divider(),
+      const Divider(),
       ListTile(
-        leading: Icon(Icons.exit_to_app, color: Colors.red),
-        title: Text('Salir', style: TextStyle(color: Colors.red)),
+        leading: const Icon(Icons.exit_to_app, color: Colors.red),
+        title: const Text('Salir', style: TextStyle(color: Colors.red)),
         onTap: () {
           Navigator.pop(context);
           Navigator.pushReplacementNamed(context, '/');
@@ -174,22 +150,16 @@ class _PantallaDashboardState extends State<PantallaDashboard> {
     switch (widget.rol) {
       case 'student':
         if (currentView == 'home') {
-          return const StudentMainScreen();
+          return const StudentMainScreen(); // Muestra la pantalla principal del estudiante
         } else if (currentView == 'mis_ruletas') {
-          return const CursosEstudiantes();
+          return const CursosEstudiantes(); // Muestra los cursos del estudiante
         }
         break;
       case 'teacher':
-        if (currentView == 'mis_cursos') {
-          return const MisCursosPage();
-        }
-        break;
-      case 'admin':
-        // Aquí deberías añadir las vistas específicas para el admin
-        if (currentView == 'admin_panel') {
-          // return AdminPanelScreen();
-        } else if (currentView == 'user_management') {
-          // return UserManagementScreen();
+        if (currentView == 'home') {
+          return const TeacherMainScreen(); // Muestra la pantalla principal del profesor sin el AppBar
+        } else if (currentView == 'mis_cursos') {
+          return const MisCursosPage(); // Muestra los cursos del profesor
         }
         break;
     }

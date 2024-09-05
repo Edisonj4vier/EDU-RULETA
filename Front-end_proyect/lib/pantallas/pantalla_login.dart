@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../widgets/pantalla_dashboard.dart';
-import '../view/viewTeacher/pantalla_dashboard_profesor.dart'; // Importa la pantalla del profesor
 
 class PantallaLogin extends StatefulWidget {
   const PantallaLogin({Key? key}) : super(key: key);
