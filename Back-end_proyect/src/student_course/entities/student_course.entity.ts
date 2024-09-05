@@ -25,7 +25,7 @@ export class StudentCourse {
   @JoinColumn({ name: 'course_id' })
   course: Course;
 
-  @Column('float', { nullable: true })
+  @Column('float', { default: 0 })
   puntuacion: number;
 
   @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })

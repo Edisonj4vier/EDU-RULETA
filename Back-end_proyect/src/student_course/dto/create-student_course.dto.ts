@@ -4,14 +4,14 @@ export class CreateStudentCourseDto {
   @IsString()
   @IsUUID()
   @IsOptional()
-  student_id: string;
+  student_id?: string;
 
-  @IsString()
   @IsUUID()
+  @IsString()
   course_id: string;
 
   @IsNumber()
   @Min(0)
   @IsOptional()
-  puntuacion: number;
+  puntuacion?: number;
 }

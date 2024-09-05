@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TopicsService } from './topics.service';
 import { CreateTopicDto } from './dto/create-topic.dto';
@@ -20,13 +21,20 @@ import {
   ApiQuery,
 } from '@nestjs/swagger';
 import { Topic } from './entities/topic.entity';
+import { Auth, RoleProtected } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/interfaces';
+import { UserRoleGuard } from 'src/auth/guards';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Temas de los cursos')
+@Auth()
 @Controller('topics')
 export class TopicsController {
   constructor(private readonly topicsService: TopicsService) {}
 
   @Post()
+  @RoleProtected(ValidRoles.teacher, ValidRoles.admin)
+  @UseGuards(AuthGuard(), UserRoleGuard)
   @ApiOperation({ summary: 'Crear un nuevo tema' })
   @ApiResponse({
     status: 201,

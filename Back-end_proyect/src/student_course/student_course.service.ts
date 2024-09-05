@@ -21,6 +21,7 @@ export class StudentCourseService {
     private readonly studentCourseSRepository: Repository<StudentCourse>,
   ) {}
   async create(createStudentCourseDto: CreateStudentCourseDto, user: User) {
+    console.log('createStudentCourseDto', createStudentCourseDto);
     const studentCourse = this.studentCourseSRepository.create({
       puntuacion: createStudentCourseDto.puntuacion,
       user,
@@ -37,7 +38,7 @@ export class StudentCourseService {
     try {
       const studentCourse = await this.studentCourseSRepository.findOne({
         where: { id },
-        relations: ['course'],
+        relations: ['course', 'course.topics'],
       });
 
       if (!studentCourse) {
@@ -81,6 +82,7 @@ export class StudentCourseService {
 
       return studentCourses.map((sc) => {
         return {
+          id: sc.id,
           course: sc.course,
           puntuation: sc.puntuacion,
           inscriptionDate: sc.fecha_inscripcion,
