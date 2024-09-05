@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PantallaDashboardProfesor extends StatelessWidget {
-  const PantallaDashboardProfesor({super.key});
+  const PantallaDashboardProfesor({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
