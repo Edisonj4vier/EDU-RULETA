@@ -78,6 +78,15 @@ export class AuthService {
     };
   }
 
+  async delete(id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
+    });
+    if (!user) throw new BadRequestException('User not found');
+    await this.userRepository.delete(id);
+    return { message: 'User deleted' };
+  }
+
   private getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);
     return token;
