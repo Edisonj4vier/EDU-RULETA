@@ -49,7 +49,7 @@ class TeacherMainScreen extends StatelessWidget {
                 _buildInfoCard(
                   context,
                   'Estudiantes Inscritos',
-                  '150', // Dato de ejemplo para estudiantes inscritos
+                  '7', // Dato de ejemplo para estudiantes inscritos
                   Icons.group,
                   Colors.purple[300]!,
                 ),
