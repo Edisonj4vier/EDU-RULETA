@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
 
@@ -10,7 +10,10 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Auth, GetUser } from './decorators';
+import { Auth, GetUser, RoleProtected } from './decorators';
+import { ValidRoles } from './interfaces';
+import { AuthGuard } from '@nestjs/passport';
+import { UserRoleGuard } from './guards';
 
 @ApiTags('Authenticacion')
 @Controller('auth')
@@ -47,6 +50,12 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
+  @Get('users')
+  @RoleProtected(ValidRoles.admin)
+  @UseGuards(AuthGuard(), UserRoleGuard)
+  getUsers() {
+    return this.authService.getAllUsers();
+  }
   @ApiOperation({ summary: 'Verificar el estado de autenticación del usuario' })
   @ApiBearerAuth()
   @ApiResponse({

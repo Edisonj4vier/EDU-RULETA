@@ -28,6 +28,9 @@ export class QuestionsService {
     try {
       const question = this.questionRepository.create({
         ...createQuestionDto,
+        topic: {
+          id: createQuestionDto.topic_id,
+        },
       });
       await this.questionRepository.save(question);
 
@@ -50,14 +53,29 @@ export class QuestionsService {
     }
   }
 
+  async createMultiple(createQuestionsDto: CreateQuestionDto[]) {
+    const createdQuestions = [];
+
+    for (const createQuestionDto of createQuestionsDto) {
+      const createdQuestion = await this.create(createQuestionDto);
+      createdQuestions.push(createdQuestion);
+    }
+
+    return createdQuestions;
+  }
+
   async findAllByTopic(topicId: string, paginationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = paginationDto;
+    console.log('topicId', topicId);
+    console.log('limit', limit);
+    console.log('offset', offset);
     return await this.questionRepository.find({
       take: limit,
       skip: limit * offset,
       where: {
         topic: { id: topicId },
       },
+      relations: ['answers'],
     });
   }
 

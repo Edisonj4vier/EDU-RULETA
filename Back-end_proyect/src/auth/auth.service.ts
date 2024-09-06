@@ -67,6 +67,10 @@ export class AuthService {
     };
   }
 
+  async getAllUsers() {
+    return await this.userRepository.find();
+  }
+
   async checkAuthStatus(user: User) {
     return {
       ...user,
